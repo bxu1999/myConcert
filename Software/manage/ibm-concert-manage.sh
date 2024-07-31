@@ -34,7 +34,7 @@ function create_env_file {
   echo "export SERVICE_VERSION=${SERVICE_VERSION:-"1.0.0"}" >> ${work_dir}/ibm-concert-manage.env 
   echo "export OCP_URL=<enter your Red Hat OpenShift Container Platform URL>" >> ${work_dir}/ibm-concert-manage.env
   echo "export OPENSHIFT_TYPE=<enter your deployment type>" >> ${work_dir}/ibm-concert-manage.env
-  echo "export IMAGE_ARCH=<enter your cluster architecture>" >> ${work_dir}/ibm-concert-manage.env
+  echo "export IMAGE_ARCH=${IMAGE_ARCH:-amd64}" >> ${work_dir}/ibm-concert-manage.env
   echo "export PROJECT_OPERATOR=<enter your IBM Automation operator installation project>" >> ${work_dir}/ibm-concert-manage.env
   echo "export PROJECT_INSTANCE=<enter your IBM Concert installation project>" >> ${work_dir}/ibm-concert-manage.env
   echo "# export PROJECT_TETHERED=<enter the tethered project>" >> ${work_dir}/ibm-concert-manage.env
@@ -205,7 +205,7 @@ function login-private-image-registry {
 
 function list-images {
     echo "list-images"
-     ${dockerexe} exec $container_name /opt/ansible/bin/list-images --components=${components} --release=${release} --inspect_source_registry=true
+     ${dockerexe} exec $container_name /opt/ansible/bin/list-images --components=${components} --release=${release} --inspect_source_registry=false
 }
 
 function list-images-mirrored {
@@ -215,7 +215,7 @@ function list-images-mirrored {
 
 function mirror-images {
     echo "mirror-images"
-    ${dockerexe} exec $container_name /opt/ansible/bin/mirror-images --components=${components} --release=${release} --target_registry=${PRIVATE_REGISTRY_LOCATION} --case_download=false
+    ${dockerexe} exec $container_name /opt/ansible/bin/mirror-images --components=${components} --arch=${IMAGE_ARCH} --release=${release} --target_registry=${PRIVATE_REGISTRY_LOCATION} --case_download=false
 }
 
 function create-service-config {
