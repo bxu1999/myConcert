@@ -47,9 +47,9 @@ function create_env_file {
   echo "export PRIVATE_REGISTRY_PULL_USER=${PRIVATE_REGISTRY_PULL_USER}" >> ${work_dir}/ibm-concert-manage.env
   echo "export PRIVATE_REGISTRY_PULL_PASSWORD=${PRIVATE_REGISTRY_PULL_PASSWORD}" >> ${work_dir}/ibm-concert-manage.env
   # for airgap install
-  echo "# export PRIVATE_IMAGE_REGISTRY_LOCATION=<enter the location where images are hosted>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export PRIVATE_IMAGE_REGISTRY_PULL_USER=<enter the username of a user that can pull images from the image registry>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export PRIVATE_IMAGE_REGISTRY_PULL_PASSWORD=<enter the password of the user that can pull the images from the image registry>" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_IMAGE_REGISTRY_LOCATION=$(PRIVATE_IMAGE_REGISTRY_LOCATION}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_IMAGE_REGISTRY_PULL_USER=${PRIVATE_IMAGE_REGISTRY_PULL_USER}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_IMAGE_REGISTRY_PULL_PASSWORD=${PRIVATE_IMAGE_REGISTRY_PULL_PASSWORD}" >> ${work_dir}/ibm-concert-manage.env
 
 }
 
