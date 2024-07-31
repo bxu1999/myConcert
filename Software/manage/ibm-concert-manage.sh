@@ -311,6 +311,9 @@ case "$1" in
     login-entitled-registry)
         login-entitled-registry
         ;;
+    update_env_file)
+        create_env_file
+        ;;
     help )
         print-help
         ;;
