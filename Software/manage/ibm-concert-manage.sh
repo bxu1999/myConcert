@@ -11,7 +11,7 @@ work_dir=${WORK_DIR:-"${scriptdir}/.ibm-concert-manage-utils"}
 container_name=ibm-aaf-utils
 tools_container_name=ibm-concert-toolbox
 release="4.8.3" # AAF Release
-components=${COMPONENTS:-"cpd_platform,concert"} 
+components=${COMPONENTS:-"ibm-cert-manager,ibm-licensing,cpfs,cpd_platform,concert"} 
 service_name=concert
 service_version=${SERVICE_VERSION:-"1.0.0"} # Concert Release
 preview=${PREVIEW:-"false"}
@@ -40,12 +40,12 @@ function create_env_file {
   echo "# export PROJECT_TETHERED=<enter the tethered project>" >> ${work_dir}/ibm-concert-manage.env
   echo "export STG_CLASS_BLOCK=<RWO-storage-class-name>" >> ${work_dir}/ibm-concert-manage.env
   echo "export STG_CLASS_FILE=<RWX-storage-class-name>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export IBM_ENTITLEMENT_KEY=<enter your IBM entitlement API key>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export PRIVATE_REGISTRY_LOCATION=<enter the location of your private container registry>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export PRIVATE_REGISTRY_PUSH_USER=<enter the username of a user that can push to the registry>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export PRIVATE_REGISTRY_PUSH_PASSWORD=<enter the password of the user that can push to the registry>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export PRIVATE_REGISTRY_PULL_USER=<enter the username of a user that can pull from the registry>" >> ${work_dir}/ibm-concert-manage.env
-  echo "# export PRIVATE_REGISTRY_PULL_PASSWORD=<enter the password of the user that can pull from the registry>" >> ${work_dir}/ibm-concert-manage.env
+  echo "export IBM_ENTITLEMENT_KEY=${IBM_ENTITLEMENT_KEY}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_REGISTRY_LOCATION=${PRIVATE_REGISTRY_LOCATION}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_REGISTRY_PUSH_USER=${PRIVATE_REGISTRY_PUSH_USER}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_REGISTRY_PUSH_PASSWORD=${PRIVATE_REGISTRY_PUSH_PASSWORD}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_REGISTRY_PULL_USER=${PRIVATE_REGISTRY_PULL_USER}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_REGISTRY_PULL_PASSWORD=${PRIVATE_REGISTRY_PULL_PASSWORD}" >> ${work_dir}/ibm-concert-manage.env
   # for airgap install
   echo "# export PRIVATE_IMAGE_REGISTRY_LOCATION=<enter the location where images are hosted>" >> ${work_dir}/ibm-concert-manage.env
   echo "# export PRIVATE_IMAGE_REGISTRY_PULL_USER=<enter the username of a user that can pull images from the image registry>" >> ${work_dir}/ibm-concert-manage.env
@@ -193,6 +193,11 @@ function login-private-registry {
     ${dockerexe} exec $container_name /opt/ansible/bin/login-private-registry ${PRIVATE_REGISTRY_LOCATION} ${PRIVATE_REGISTRY_PUSH_USER} ${PRIVATE_REGISTRY_PUSH_PASSWORD}
 }
 
+function login-entitled-registry {
+    echo "login-entitled-registry"
+    ${dockerexe} exec $container_name /opt/ansible/bin/login-entitled-registry ${IBM_ENTITLEMENT_KEY}
+}
+
 function login-private-image-registry {
     echo "login-private-image-registry"
     ${dockerexe} exec $container_name /opt/ansible/bin/login-private-registry ${PRIVATE_IMAGE_REGISTRY_LOCATION} ${PRIVATE_IMAGE_REGISTRY_PULL_USER} ${PRIVATE_IMAGE_REGISTRY_PULL_PASSWORD}
@@ -302,6 +307,9 @@ case "$1" in
         ;;
     get-concert-instance-details)
         get-concert-instance-details
+        ;;
+    login-entitled-registry)
+        login-entitled-registry
         ;;
     help )
         print-help
