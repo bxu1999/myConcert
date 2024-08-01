@@ -11,7 +11,7 @@ work_dir=${WORK_DIR:-"${scriptdir}/.ibm-concert-manage-utils"}
 container_name=ibm-aaf-utils
 tools_container_name=ibm-concert-toolbox
 release="4.8.3" # AAF Release
-components=${COMPONENTS:-"ibm-cert-manager,ibm-licensing,cpfs,cpd_platform,concert"} 
+components=${COMPONENTS:-"cpd_platform,concert"} 
 service_name=concert
 service_version=${SERVICE_VERSION:-"1.0.0"} # Concert Release
 preview=${PREVIEW:-"false"}
@@ -28,7 +28,7 @@ function create_env_file {
   echo "export UTILS_IMG=${UTILS_IMG:-"cp.icr.io/cpopen/concert/aaf-utils:latest"}" >> ${work_dir}/ibm-concert-manage.env
   echo "export WORK_DIR=${WORK_DIR:-"${scriptdir}/.ibm-concert-manage-utils"}" >> ${work_dir}/ibm-concert-manage.env
   echo "export container_name=ibm-aaf-utils" >> ${work_dir}/ibm-concert-manage.env
-  echo "export COMPONENTS=${COMPONENTS:-"ibm-cert-manager,ibm-licensing,cpfs,cpd_platform,concert"}" >> ${work_dir}/ibm-concert-manage.env 
+  echo "export COMPONENTS=${COMPONENTS:-"cpd_platform,concert"}" >> ${work_dir}/ibm-concert-manage.env 
   echo "export PREVIEW=${PREVIEW:-"false"}" >> ${work_dir}/ibm-concert-manage.env 
   echo "export ACTION=${ACTION:-"install"}" >> ${work_dir}/ibm-concert-manage.env 
   echo "export SERVICE_VERSION=${SERVICE_VERSION:-"1.0.0"}" >> ${work_dir}/ibm-concert-manage.env 
