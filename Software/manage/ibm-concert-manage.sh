@@ -208,7 +208,8 @@ function login-private-image-registry {
 
 function list-images {
     echo "list-images"
-     ${dockerexe} exec $container_name /opt/ansible/bin/list-images --components=${components_mirror} --release=${release} --inspect_source_registry=false
+    echo "{dockerexe} exec $container_name /opt/ansible/bin/list-images --components=${components_mirror} --release=${release} --inspect_source_registry=false"
+    ${dockerexe} exec $container_name /opt/ansible/bin/list-images --components=${components_mirror} --release=${release} --inspect_source_registry=false
 }
 
 function list-images-mirrored {
