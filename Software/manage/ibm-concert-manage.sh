@@ -194,6 +194,7 @@ function delete-olm-artifacts {
 function login-private-registry {
     echo "login-private-registry"
     ${dockerexe} exec $container_name /opt/ansible/bin/login-private-registry ${PRIVATE_REGISTRY_LOCATION} ${PRIVATE_REGISTRY_PUSH_USER} ${PRIVATE_REGISTRY_PUSH_PASSWORD}
+    ${dockerexe} exec $container_name /opt/ansible/bin/login-private-registry ${PRIVATE_REGISTRY_LOCATION_MIRROR} ${PRIVATE_REGISTRY_PUSH_USER} ${PRIVATE_REGISTRY_PUSH_PASSWORD}
 }
 
 function login-entitled-registry {
