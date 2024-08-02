@@ -11,7 +11,8 @@ work_dir=${WORK_DIR:-"${scriptdir}/.ibm-concert-manage-utils"}
 container_name=ibm-aaf-utils
 tools_container_name=ibm-concert-toolbox
 release="4.8.3" # AAF Release
-components=${COMPONENTS:-"cpd_platform,concert"} 
+components=${COMPONENTS:-"cpd_platform,concert"}
+components_mirror=${COMPONENTS_MIRROR:-"ibm-cert-manager,ibm-licensing,cpfs,cpd_platform,concert"} 
 service_name=concert
 service_version=${SERVICE_VERSION:-"1.0.0"} # Concert Release
 preview=${PREVIEW:-"false"}
@@ -29,6 +30,7 @@ function create_env_file {
   echo "export WORK_DIR=${WORK_DIR:-"${scriptdir}/.ibm-concert-manage-utils"}" >> ${work_dir}/ibm-concert-manage.env
   echo "export container_name=ibm-aaf-utils" >> ${work_dir}/ibm-concert-manage.env
   echo "export COMPONENTS=${COMPONENTS:-"cpd_platform,concert"}" >> ${work_dir}/ibm-concert-manage.env 
+  echo "export COMPONENTS_MIRROR=${COMPONENTS:-"ibm-cert-manager,ibm-licensing,cpfs,cpd_platform,concert"}" >> ${work_dir}/ibm-concert-manage.env 
   echo "export PREVIEW=${PREVIEW:-"false"}" >> ${work_dir}/ibm-concert-manage.env 
   echo "export ACTION=${ACTION:-"install"}" >> ${work_dir}/ibm-concert-manage.env 
   echo "export SERVICE_VERSION=${SERVICE_VERSION:-"1.0.0"}" >> ${work_dir}/ibm-concert-manage.env 
@@ -41,6 +43,7 @@ function create_env_file {
   echo "export STG_CLASS_BLOCK=${STG_CLASS_BLOCK}" >> ${work_dir}/ibm-concert-manage.env
   echo "export STG_CLASS_FILE=${STG_CLASS_FILE}" >> ${work_dir}/ibm-concert-manage.env
   echo "export IBM_ENTITLEMENT_KEY=${IBM_ENTITLEMENT_KEY}" >> ${work_dir}/ibm-concert-manage.env
+  echo "export PRIVATE_REGISTRY_LOCATION_MIRROR=${PRIVATE_REGISTRY_LOCATION_MIRROR}" >> ${work_dir}/ibm-concert-manage.env
   echo "export PRIVATE_REGISTRY_LOCATION=${PRIVATE_REGISTRY_LOCATION}" >> ${work_dir}/ibm-concert-manage.env
   echo "export PRIVATE_REGISTRY_PUSH_USER=${PRIVATE_REGISTRY_PUSH_USER}" >> ${work_dir}/ibm-concert-manage.env
   echo "export PRIVATE_REGISTRY_PUSH_PASSWORD=${PRIVATE_REGISTRY_PUSH_PASSWORD}" >> ${work_dir}/ibm-concert-manage.env
@@ -215,7 +218,7 @@ function list-images-mirrored {
 
 function mirror-images {
     echo "mirror-images"
-    ${dockerexe} exec $container_name /opt/ansible/bin/mirror-images --components=${components} --arch=${IMAGE_ARCH} --release=${release} --target_registry=${PRIVATE_REGISTRY_LOCATION} --case_download=false
+    ${dockerexe} exec $container_name /opt/ansible/bin/mirror-images --components=${components_mirror} --arch=${IMAGE_ARCH} --release=${release} --target_registry=${PRIVATE_REGISTRY_LOCATION_MIRROR} --case_download=false
 }
 
 function create-service-config {
